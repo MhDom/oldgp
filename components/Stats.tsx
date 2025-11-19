@@ -14,51 +14,75 @@ const data = [
 
 const Stats: React.FC = () => {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-black text-gray-900 mb-4">آمار گروه های ثبت شده</h2>
-          <p className="text-gray-500">این آمار فقط مربوط به ثبت‌های موفق در سایت ما می‌باشد.</p>
-        </div>
+        
+        {/* Main Container with Blue Border */}
+        <div className="border-4 border-brand-200 rounded-[2.5rem] p-8 lg:p-12 relative">
+            
+            {/* Section Header */}
+            <div className="text-center mb-16">
+                <h2 className="text-3xl lg:text-4xl font-black text-gray-900 mb-4">آمار گروه های ثبت شده</h2>
+                <p className="text-gray-500 text-lg">این آمار فقط مربوط به ثبت‌های موفق در سایت ما می‌باشد.</p>
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Counters Grid */}
-          <div className="grid grid-cols-2 gap-6">
-            {STATS.map((stat, index) => (
-              <div key={stat.label} className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 hover:border-brand-200 hover:shadow-md transition-all group">
-                <div className="text-4xl font-black text-brand-600 mb-2 group-hover:scale-110 transition-transform duration-300">
-                  {stat.value.toLocaleString('fa-IR')}
+            <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-20">
+                
+                {/* Left Side (RTL: End): Chart */}
+                <div className="w-full lg:w-1/2 relative">
+                    <div className="absolute inset-0 bg-brand-100 rounded-3xl transform rotate-3 scale-95 opacity-50"></div>
+                    <div className="bg-white p-6 rounded-3xl shadow-2xl shadow-brand-100/50 border border-gray-100 relative z-10 h-80">
+                        <div className="flex justify-between items-center mb-6 px-2">
+                             <h3 className="text-lg font-bold text-gray-800">روند ثبت گروه در هفته جاری</h3>
+                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <ResponsiveContainer width="100%" height="85%">
+                            <AreaChart
+                            data={data}
+                            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                            >
+                            <defs>
+                                <linearGradient id="colorGroups" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                            <XAxis 
+                                dataKey="name" 
+                                tick={{fontFamily: 'Vazirmatn', fontSize: 10}} 
+                                stroke="#9ca3af" 
+                                interval={0}
+                                tickMargin={10}
+                            />
+                            <YAxis tick={{fontFamily: 'Vazirmatn', fontSize: 10}} stroke="#9ca3af" />
+                            <Tooltip 
+                                contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', fontFamily: 'Vazirmatn'}}
+                            />
+                            <Area type="monotone" dataKey="groups" stroke="#3b82f6" strokeWidth={4} fillOpacity={1} fill="url(#colorGroups)" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
 
-          {/* Chart */}
-          <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 h-80 w-full">
-             <h3 className="text-lg font-bold text-gray-800 mb-4">روند ثبت گروه در هفته جاری</h3>
-             <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={data}
-                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="colorGroups" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                  <XAxis dataKey="name" tick={{fontFamily: 'Vazirmatn', fontSize: 12}} stroke="#9ca3af" />
-                  <YAxis tick={{fontFamily: 'Vazirmatn', fontSize: 12}} stroke="#9ca3af" />
-                  <Tooltip 
-                    contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'}}
-                    labelStyle={{fontFamily: 'Vazirmatn', fontWeight: 'bold'}}
-                  />
-                  <Area type="monotone" dataKey="groups" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorGroups)" />
-                </AreaChart>
-             </ResponsiveContainer>
-          </div>
+                {/* Right Side (RTL: Start): Stats Cards */}
+                <div className="w-full lg:w-1/2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {STATS.map((stat, index) => (
+                        <div 
+                            key={stat.label} 
+                            className="bg-gray-50 rounded-[2rem] p-8 text-center border border-gray-100 hover:bg-brand-50 hover:border-brand-200 transition-all duration-300 group"
+                        >
+                            <div className="text-5xl font-black text-brand-600 mb-3 tracking-tight group-hover:scale-110 transition-transform duration-300">
+                            {stat.value.toLocaleString('fa-IR')}
+                            </div>
+                            <div className="text-gray-500 font-bold text-lg">{stat.label}</div>
+                        </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
         </div>
       </div>
     </section>

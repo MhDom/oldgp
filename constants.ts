@@ -1,11 +1,9 @@
 import { PriceItem, NavItem, StatItem } from './types';
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'صفحه اصلی', href: '#' },
   { label: 'فروش گروه', href: '#sell' },
   { label: 'نکات قبل از فروش', href: '#tips' },
   { label: 'لیست قیمت', href: '#prices' },
-  { label: 'مقالات', href: '#blog' },
 ];
 
 export const PRICE_LIST: PriceItem[] = [
@@ -25,8 +23,6 @@ export const PRICE_LIST: PriceItem[] = [
 ];
 
 export const STATS: StatItem[] = [
-  { label: 'امروز', value: 8 },
-  { label: 'هفته', value: 25 },
   { label: 'ماه', value: 142 },
   { label: 'کل', value: 5341 },
 ];

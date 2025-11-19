@@ -16,18 +16,19 @@ const Footer: React.FC = () => {
                 NUMZI
             </h3>
             <p className="text-sm leading-relaxed text-gray-400">
-              اولین و بزرگترین پلتفرم تخصصی خرید و فروش گروه‌های قدیمی تلگرام در ایران با بیش از ۱۰ سال سابقه درخشان.
+              بزرگترین تیم ارایه خدمات تلگرام با نزدیک به ده سال سابقه در خدمات تلگرام شامل ربات، لینکدونی، ممبر و غیره
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-             <h4 className="text-lg font-bold text-white">دسترسی سریع</h4>
+             <h4 className="text-lg font-bold text-white">خدمات ما</h4>
              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-brand-400 transition-colors">صفحه اصلی</a></li>
-                <li><a href="#prices" className="hover:text-brand-400 transition-colors">لیست قیمت</a></li>
-                <li><a href="#tips" className="hover:text-brand-400 transition-colors">نکات مهم</a></li>
-                <li><a href="#sell" className="hover:text-brand-400 transition-colors">فروش گروه</a></li>
+                <li><a href="https://numzi.ir/" className="hover:text-brand-400 transition-colors">فروش گروه</a></li>
+                <li><a href="https://t.me/Link4you" className="hover:text-brand-400 transition-colors">بزرگترین لینکدونی</a></li>
+                <li><a href="https://digianti.com/" className="hover:text-brand-400 transition-colors">ربات مدیریت گروه</a></li>
+                <li><a href="https://t.me/DigiMusic1Bot" className="hover:text-brand-400 transition-colors">ربات موزیک</a></li>
+                <li><a href="https://t.me/Numzibot" className="hover:text-brand-400 transition-colors">ربات نجوا</a></li>
              </ul>
           </div>
 
@@ -38,9 +39,6 @@ const Footer: React.FC = () => {
                 <a href="https://t.me/GpBuy1" target="_blank" rel="noreferrer" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-brand-600 hover:text-white transition-all">
                     <Send size={20} />
                 </a>
-                <a href="#" className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 hover:text-white transition-all">
-                    <Instagram size={20} />
-                </a>
             </div>
             <div className="bg-gray-800 p-4 rounded-xl">
                 <p className="text-xs text-gray-400 mb-1">پشتیبانی تلگرام:</p>
@@ -50,7 +48,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
-            <p>© ۲۰۲۵ تمامی حقوق محفوظ است. طراحی شده با ❤️ توسط تیم توسعه.</p>
+            <p>© ۲۰۲۵ تمامی حقوق محفوظ است. طراحی شده با ❤️ توسط تیم دیجی</p>
         </div>
       </div>
     </footer>

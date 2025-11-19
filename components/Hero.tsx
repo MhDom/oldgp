@@ -1,0 +1,133 @@
+import React, { useState } from 'react';
+import { Calculator, AlertCircle } from 'lucide-react';
+import { PRICE_LIST } from '../constants';
+
+const Hero: React.FC = () => {
+  const [selectedYear, setSelectedYear] = useState<string>('');
+  const [price, setPrice] = useState<number>(0);
+  const [link, setLink] = useState('');
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setSelectedYear(val);
+    const item = PRICE_LIST.find((p) => p.id === val);
+    setPrice(item ? item.price : 0);
+  };
+
+  const formatPrice = (p: number) => {
+    return new Intl.NumberFormat('fa-IR').format(p);
+  };
+
+  return (
+    <section id="sell" className="relative bg-gradient-to-b from-brand-50 to-white pt-10 pb-24 lg:pt-20 lg:pb-32 overflow-hidden">
+        {/* Abstract Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
+            <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-brand-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+            <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
+        
+        {/* Text Content */}
+        <div className="text-center lg:text-right flex-1 z-10">
+          <span className="inline-block px-4 py-1 mb-6 text-sm font-semibold tracking-wider text-brand-700 uppercase bg-brand-100 rounded-full">
+            افزایش قیمت ده درصدی ۲۰۲۲ به قبل
+          </span>
+          <h1 className="text-4xl lg:text-6xl font-black text-gray-900 leading-tight mb-6">
+            فروش گروه تلگرام شما
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600">
+              به بهترین قیمت
+            </span>
+          </h1>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            گروه خود را در کمتر از ۵ دقیقه بفروشید و پول آن را به صورت آنی (تومان یا دلار) دریافت کنید. 
+            با تضمین بالاترین قیمت در بازار ایران.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+             <a href="#prices" className="px-8 py-4 bg-white text-brand-600 border-2 border-brand-100 font-bold rounded-xl hover:border-brand-300 hover:bg-brand-50 transition-colors shadow-sm">
+                مشاهده لیست قیمت
+             </a>
+             <a href="#tips" className="px-8 py-4 bg-brand-600 text-white font-bold rounded-xl hover:bg-brand-700 transition-colors shadow-lg shadow-brand-200 flex items-center justify-center gap-2">
+                <AlertCircle size={20} />
+                نکات مهم
+             </a>
+          </div>
+        </div>
+
+        {/* Form Card */}
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl shadow-brand-100 border border-white/50 backdrop-blur-sm p-8 z-10 relative transform hover:-translate-y-1 transition-transform duration-300">
+            <div className="absolute -top-6 -right-6 bg-yellow-400 text-gray-900 font-bold p-4 rounded-2xl shadow-lg rotate-12 flex flex-col items-center justify-center w-24 h-24">
+                <span className="text-xs">شروع از</span>
+                <span className="text-lg font-black">1.2M</span>
+                <span className="text-[10px]">تومان</span>
+            </div>
+
+          <div className="flex items-center gap-2 mb-6 text-brand-700">
+            <Calculator className="w-6 h-6" />
+            <h3 className="text-xl font-bold">محاسبه قیمت و فروش</h3>
+          </div>
+
+          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+            <div>
+              <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
+                سال ساخت گروه <span className="text-red-500 text-xs">(ضروری)</span>
+              </label>
+              <div className="relative">
+                <select
+                  id="year"
+                  value={selectedYear}
+                  onChange={handleYearChange}
+                  className="block w-full pr-4 pl-10 py-3 text-base border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm rounded-xl bg-gray-50 transition-all"
+                >
+                  <option value="" disabled>انتخاب سال ساخت...</option>
+                  {PRICE_LIST.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.yearLabel}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <p className="mt-1 text-xs text-gray-400">حتما قبل از ثبت، ویدیو آموزشی را مشاهده کنید.</p>
+            </div>
+
+            <div>
+              <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-2">
+                لینک گروه <span className="text-red-500 text-xs">(ضروری)</span>
+              </label>
+              <input
+                type="text"
+                id="link"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+                dir="ltr"
+                placeholder="https://t.me/..."
+                className="block w-full px-4 py-3 border-gray-200 rounded-xl bg-gray-50 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all text-left placeholder:text-right"
+              />
+              <p className="mt-1 text-xs text-gray-400">لینک عمومی (Public) گروه را وارد نمایید.</p>
+            </div>
+
+            <div className="bg-brand-50 rounded-xl p-4 border border-brand-100">
+                <div className="flex justify-between items-center">
+                    <span className="text-gray-600 font-medium">قیمت خرید ما:</span>
+                    <span className="text-2xl font-black text-brand-700 tracking-tight">
+                        {price > 0 ? formatPrice(price) : '0'} <span className="text-sm font-normal text-gray-500">تومان</span>
+                    </span>
+                </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all transform active:scale-95"
+            >
+              فروش گروه
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator, AlertCircle } from 'lucide-react';
+import { Calculator, AlertCircle, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { PRICE_LIST } from '../constants';
 
 const Hero: React.FC = () => {
@@ -7,6 +7,8 @@ const Hero: React.FC = () => {
   const [price, setPrice] = useState<number>(0);
   const [link, setLink] = useState('');
   const [description, setDescription] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
@@ -17,6 +19,62 @@ const Hero: React.FC = () => {
 
   const formatPrice = (p: number) => {
     return new Intl.NumberFormat('fa-IR').format(p);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!selectedYear || !link) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    // ⚠️ IMPORTANT: REPLACE THESE WITH YOUR ACTUAL BOT TOKEN AND CHAT ID
+    // For security in production, you should route this through a backend server.
+    const BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'; 
+    const CHAT_ID = 'YOUR_CHAT_ID'; 
+
+    const yearLabel = PRICE_LIST.find(p => p.id === selectedYear)?.yearLabel || selectedYear;
+    const formattedPrice = formatPrice(price);
+
+    const message = `
+🤖 *سفارش فروش جدید*
+
+📅 *سال ساخت:* ${yearLabel}
+💰 *قیمت برآوردی:* ${formattedPrice} تومان
+🔗 *لینک گروه:* ${link}
+📝 *توضیحات:* ${description || '---'}
+    `;
+
+    try {
+      const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: message,
+          parse_mode: 'Markdown',
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setLink('');
+        setDescription('');
+        setSelectedYear('');
+        setPrice(0);
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -74,7 +132,7 @@ const Hero: React.FC = () => {
             <h3 className="text-xl font-bold">محاسبه قیمت و فروش</h3>
           </div>
 
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="year" className="block text-sm font-medium text-gray-700 mb-2">
                 سال ساخت گروه <span className="text-red-500 text-xs">(ضروری)</span>
@@ -84,6 +142,7 @@ const Hero: React.FC = () => {
                   id="year"
                   value={selectedYear}
                   onChange={handleYearChange}
+                  required
                   className="block w-full pr-4 pl-10 py-3 text-base border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm rounded-xl bg-gray-50 transition-all"
                 >
                   <option value="" disabled>انتخاب سال ساخت...</option>
@@ -106,6 +165,7 @@ const Hero: React.FC = () => {
                 id="link"
                 value={link}
                 onChange={(e) => setLink(e.target.value)}
+                required
                 dir="ltr"
                 placeholder="https://t.me/..."
                 className="block w-full px-4 py-3 border-gray-200 rounded-xl bg-gray-50 focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all text-left placeholder:text-right"
@@ -138,10 +198,32 @@ const Hero: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all transform active:scale-95"
+              disabled={isSubmitting}
+              className="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-700 hover:to-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              فروش گروه
+              {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-6 h-6 animate-spin ml-2" />
+                    در حال ارسال...
+                  </>
+              ) : (
+                  'فروش گروه'
+              )}
             </button>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+                <div className="bg-green-50 text-green-700 p-4 rounded-xl flex items-center gap-2 text-sm font-bold animate-fade-in border border-green-100">
+                    <CheckCircle className="w-5 h-5 shrink-0" />
+                    اطلاعات با موفقیت ارسال شد! به زودی با شما تماس می‌گیریم.
+                </div>
+            )}
+            {submitStatus === 'error' && (
+                <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-center gap-2 text-sm font-bold animate-fade-in border border-red-100">
+                    <XCircle className="w-5 h-5 shrink-0" />
+                    خطا در ارسال اطلاعات. لطفا دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.
+                </div>
+            )}
           </form>
         </div>
       </div>

@@ -19,6 +19,7 @@ export const PRICE_DB: PriceData[] = [
   { id: '2024-2', labels: { fa: '۲۰۲۴ (ماه چهارم)', en: '2024 (Month 4)' }, prices: { toman: 150000, usd: 3 } },
   { id: '2024-3', labels: { fa: '۲۰۲۴ (ماه پنجم)', en: '2024 (Month 5)' }, prices: { toman: 100000, usd: 2 } },
   { id: '2024-4', labels: { fa: '۲۰۲۴ (باقی ماه‌ها)', en: '2024 (Rest)' }, prices: { toman: 50000, usd: 1 } },
+  { id: 'bot-2023', labels: { fa: 'ربات قدیمی ۲۰۲۳', en: 'Old Bot 2023' }, prices: { toman: 50000, usd: 0.5 } },
 ];
 
 export const TRANSLATIONS: Record<LanguageCode, Content> = {
